@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= listing.title %> | Wanderlust
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!--FOR FLASH MEASSAGE-->
+    <%- include("../includes/flash.ejs") %>
+
+
+        <!-- HEADER -->
+        <%- include("../includes/navbar.ejs") %>
+
+            <!-- MAIN -->
+            <main class="max-w-7xl mx-auto px-4 py-8">
+
+                <!-- BACK BUTTON -->
+                <div class="mb-5">
+
+                    <a href="/listings"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-rose-500 transition-all duration-300 group">
+
+                        <!-- Back Arrow -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+
+                        </svg>
+
+                        <span>Back to listings</span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- TITLE + ACTION BUTTONS -->
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-5">
+
+                    <!-- TITLE + LOCATION -->
+                    <div>
+
+                        <h1 class="text-3xl sm:text-4xl font-semibold text-gray-900 tracking-tight">
+                            <%= listing.title %>
+                        </h1>
+
+
+                        <!-- LOCATION -->
+                        <div class="flex items-center gap-1.5 mt-2">
+
+                            <!-- Location SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-rose-500 flex-shrink-0"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" />
+
+                                <circle cx="12" cy="11" r="2.5" />
+
+                            </svg>
+
+                            <p class="text-sm sm:text-base text-gray-500">
+                                <%= listing.location %>, <%= listing.country %>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="flex items-center gap-3">
+
+                        <!-- ADD REVIEW -->
+                        <% if (currUser) { %>
+
+                            <a href="/listings/<%= listing._id %>/reviews/new" title="Add Review"
+                                aria-label="Add Review"
+                                class="w-11 h-11 flex items-center justify-center rounded-full bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all duration-300">
+
+                                <!-- Review / Star Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 3.5l2.6 5.3 5.9.9-4.25 4.2 1 5.9L12 17l-5.25 2.8 1-5.9L3.5 9.7l5.9-.9L12 3.5z" />
+
+                                </svg>
+
+                            </a>
+
+                            <% } %>
+
+
+                                <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
+
+                                    <!-- EDIT -->
+                                    <a href="/listings/<%= listing._id %>/edit" title="Edit Listing"
+                                        aria-label="Edit Listing"
+                                        class="w-11 h-11 flex items-center justify-center rounded-full bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all duration-300">
+
+                                        <!-- Edit / Pencil Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.213 3 20l.787-4.5L16.862 3.487z" />
+
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.5 5.5l4 4" />
+
+                                        </svg>
+
+                                    </a>
+
+
+                                    <!-- DELETE -->
+                                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this listing?');">
+
+                                        <button type="submit" title="Delete Listing" aria-label="Delete Listing"
+                                            class="w-11 h-11 flex items-center justify-center rounded-full bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all duration-300">
+
+                                            <!-- Trash Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 7h12M9 7V4h6v3m-8 0l1 13h8l1-13M10 11v6M14 11v6" />
+
+                                            </svg>
+
+                                        </button>
+
+                                    </form>
+
+                                    <% } %>
+
+                    </div>
+
+                </div>
+
+                <!-- PHOTO GALLERY -->
+                <div class="w-full mb-10">
+
+                    <% if (listing.image && listing.image.length> 0) { %>
+
+                        <div
+                            class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 h-auto sm:h-auto md:h-auto lg:h-[500px] rounded-2xl overflow-hidden">
+
+                            <!-- MAIN IMAGE -->
+                            <div
+                                class="col-span-2 lg:col-span-2 lg:row-span-2 h-[280px] sm:h-[340px] lg:h-auto overflow-hidden">
+                                <img src="<%= listing.image[0].url %>" alt="<%= listing.title %>"
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            </div>
+
+                            <!-- IMAGE 2 -->
+                            <% if (listing.image[1]) { %>
+
+                                <div class="h-[140px] sm:h-[170px] lg:h-auto overflow-hidden">
+                                    <img src="<%= listing.image[1].url %>" alt="<%= listing.title %>"
+                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <% } %>
+
+
+                                    <!-- IMAGE 3 -->
+                                    <% if (listing.image[2]) { %>
+
+                                        <div class="h-[140px] sm:h-[170px] lg:h-auto overflow-hidden">
+                                            <img src="<%= listing.image[2].url %>" alt="<%= listing.title %>"
+                                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                        </div>
+
+                                        <% } %>
+
+
+                                            <!-- IMAGE 4 -->
+                                            <% if (listing.image[3]) { %>
+
+                                                <div class="h-[140px] sm:h-[170px] lg:h-auto overflow-hidden">
+                                                    <img src="<%= listing.image[3].url %>" alt="<%= listing.title %>"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                                </div>
+
+                                                <% } %>
+
+
+                                                    <!-- IMAGE 5 -->
+                                                    <% if (listing.image[4]) { %>
+
+                                                        <div
+                                                            class="relative h-[140px] sm:h-[170px] lg:h-auto overflow-hidden">
+                                                            <img src="<%= listing.image[4].url %>"
+                                                                alt="<%= listing.title %>"
+                                                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                                            <!-- SHOW ALL PHOTOS BUTTON -->
+                                                            <button type="button"
+                                                                class="absolute bottom-4 right-4 inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-xl shadow-lg hover:bg-white hover:scale-105 transition-all duration-300">
+
+                                                                <!-- Grid Icon -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M4 4h4v4H4V4z M10 4h4v4h-4V4z M16 4h4v4h-4V4z M4 10h4v4H4v-4z M10 10h4v4h-4v-4z M16 10h4v4h-4v-4z M4 16h4v4H4v-4z M10 16h4v4h-4v-4z M16 16h4v4h-4v-4z" />
+
+                                                                </svg>
+
+                                                                Show all photos
+
+                                                            </button>
+                                                        </div>
+
+                                                        <% } %>
+
+                        </div>
+
+                        <% } else { %>
+
+                            <!-- IMAGE PLACEHOLDER -->
+                            <div class="w-full h-[420px] rounded-2xl flex items-center justify-center bg-gray-100">
+
+                                <div class="text-center">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 mx-auto text-gray-300"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 16l4-4 3 3 4-5 5 6M4 19h16a1 1 0 001-1V6a1 1 0 00-1-1H4v12a1 1 0 001 1z" />
+
+                                    </svg>
+
+                                    <p class="mt-3 text-sm text-gray-400">
+                                        No images available
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <% } %>
+
+                </div>
+
+                <!-- CONTENT GRID -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                    <!-- LEFT SECTION -->
+                    <div class="lg:col-span-2">
+                        <!-- HOST INFORMATION -->
+                        <section class="bg-white border rounded-2xl shadow-sm p-5 mb-8">
+
+                            <div class="flex items-center gap-4">
+
+                                <!-- Avatar -->
+                                <div
+                                    class="w-14 h-14 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold shadow-md">
+
+                                    <%= listing.owner.username.charAt(0).toUpperCase() %>
+
+                                </div>
+
+                                <!-- Host Details -->
+                                <div class="flex-1">
+
+                                    <h3 class="text-lg font-semibold text-gray-800">
+
+                                        Hosted by
+                                        <span class="text-rose-500">
+                                            <%= listing.owner.username %>
+                                        </span>
+
+                                    </h3>
+
+                                    <p class="text-sm text-gray-500 truncate max-w-[250px]"
+                                        title="<%= listing.owner.email %>">
+
+                                        <%= listing.owner.email %>
+
+                                    </p>
+
+                                    <div class="flex items-center gap-2 mt-2">
+
+                                        <span
+                                            class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+
+                                            ✔ Verified Host
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                        <!-- DESCRIPTION -->
+                        <section class="mb-8">
+
+                            <h2 class="text-2xl font-semibold text-gray-900 mb-3">
+                                About this place
+                            </h2>
+
+                            <div class="relative">
+
+                                <p id="descriptionText" class="text-gray-600 leading-relaxed overflow-hidden">
+                                    <%= listing.description %>
+                                </p>
+
+                                <!-- SHOW MORE / SHOW LESS BUTTON -->
+                                <button type="button" id="descriptionToggle"
+                                    class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-gray-800 text-sm font-semibold hover:bg-gray-200 hover:shadow-sm transition-all duration-300">
+
+                                    <span id="descriptionToggleText">
+                                        Show more
+                                    </span>
+
+                                    <!-- Arrow Icon -->
+                                    <svg id="descriptionToggleIcon" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-4 h-4 transition-transform duration-300" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+
+                                    </svg>
+
+                                </button>
+
+                            </div>
+
+                        </section>
+
+                        <!-- AMENITIES -->
+                        <section class="border-t pt-8">
+
+                            <h2 class="text-2xl font-semibold text-gray-900 mb-7">
+                                What this place offers
+                            </h2>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+
+                                <!-- FREE WIFI -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.111 16.404a5.5 5.5 0 017.778 0M5.05 13.343a9.5 9.5 0 0113.9 0M2.1 10.394a13.5 13.5 0 0119.8 0M12 20.25h.008v.008H12v-.008z" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Free WiFi
+                                    </span>
+
+                                </div>
+
+
+                                <!-- KITCHEN -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6 3v8M4 3v5a2 2 0 004 0V3M6 10v11M17 3v18M17 3c2 2 3 4.5 3 7v1h-3" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Kitchen
+                                    </span>
+
+                                </div>
+
+
+                                <!-- AIR CONDITIONING -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 3v18M5.636 6.636l12.728 10.728M18.364 6.636L5.636 17.364M3 12h18" />
+
+                                        <circle cx="12" cy="12" r="3" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Air conditioning
+                                    </span>
+
+                                </div>
+
+
+                                <!-- FREE PARKING -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 18v-5l2-6h14l2 6v5M5 18h14M6 13h12M7 18v2M17 18v2" />
+
+                                        <circle cx="7" cy="15" r="1" />
+                                        <circle cx="17" cy="15" r="1" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Free parking
+                                    </span>
+
+                                </div>
+
+
+                                <!-- DEDICATED WORKSPACE -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 7h16v10H4zM8 17v3M16 17v3M7 20h10M9 7V5h6v2" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Dedicated workspace
+                                    </span>
+
+                                </div>
+
+
+                                <!-- SELF CHECK-IN -->
+                                <div class="flex items-center gap-4">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500 flex-shrink-0"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 3l7 3v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3z" />
+
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+
+                                    </svg>
+
+                                    <span class="text-base sm:text-lg font-medium text-gray-800">
+                                        Self check-in
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                        <!-- REVIEWS SECTION -->
+                        <section class="border-t pt-8 mt-8">
+                            <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+                                Reviews
+                            </h2>
+
+                            <% if (listing.reviews.length===0) { %>
+                                <p class="text-gray-500 text-sm">
+                                    No reviews yet. Be the first to review this stay!
+                                </p>
+                                <% } %>
+
+                                    <div class="space-y-6">
+                                        <% for (let review of listing.reviews) { %>
+
+                                            <div
+                                                class="bg-white border rounded-xl p-5 shadow-sm hover:shadow-md transition">
+
+                                                <!-- REVIEW AUTHOR -->
+                                                <div class="flex items-center justify-between mb-4">
+
+                                                    <!-- LEFT : Avatar + Author -->
+                                                    <div class="flex items-center gap-3">
+
+                                                        <!-- USER AVATAR -->
+                                                        <div
+                                                            class="w-11 h-11 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 flex items-center justify-center shadow-sm">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="w-6 h-6 text-white" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor"
+                                                                stroke-width="2">
+
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632z" />
+
+                                                            </svg>
+
+                                                        </div>
+
+                                                        <!-- USER INFO -->
+                                                        <div>
+
+                                                            <h4 class="font-semibold text-gray-800">
+
+                                                                <%= review.author.username %>
+
+                                                            </h4>
+
+                                                            <p class="text-xs text-gray-500">
+
+                                                                <% if (review.author._id.equals(listing.owner._id)) { %>
+                                                                    Host • <%= review.createdAt.toDateString() %>
+                                                                        <% } else { %>
+                                                                            Guest • <%= review.createdAt.toDateString()
+                                                                                %>
+                                                                                <% } %>
+
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- REVIEW Rating -->
+                                                <div class="flex items-center mb-2">
+                                                    <span class="text-yellow-500 text-lg">
+                                                        <%= "⭐" .repeat(review.rating) %>
+                                                    </span>
+                                                </div>
+
+                                                <!-- REVIEW Comment -->
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    <%= review.comment %>
+                                                </p>
+
+                                                <!-- REVIEW Footer -->
+                                                <div
+                                                    class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                                                    <!-- REVIEW CREATE Date -->
+                                                    <p class="text-xs text-gray-400">
+                                                        Posted on <%= review.createdAt.toDateString() %>
+                                                    </p>
+
+                                                    <!-- DELETE REVIEW -->
+                                                    <% if (currUser && review.author._id.equals(currUser._id)) { %>
+                                                        <form
+                                                            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Are you sure you want to delete this review?');">
+
+                                                            <button type="submit"
+                                                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition">
+
+                                                                <!-- Trash Icon -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M19 7L5 7M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" />
+
+                                                                </svg>
+
+                                                                Delete Review
+
+                                                            </button>
+
+                                                        </form>
+                                                        <% } %>
+
+                                                </div>
+
+                                            </div>
+
+                                            <% } %>
+                                    </div>
+                        </section>
+
+                    </div>
+
+                    <!-- RIGHT BOOKING CARD -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 h-fit sticky top-24 z-[1000]">
+
+                        <!-- HEADING -->
+                        <h2 class="text-xl font-semibold text-gray-900 mb-5">
+                            Add dates for prices
+                        </h2>
+
+                        <!-- PRICE -->
+                        <div class="mb-5">
+                            <span class="text-2xl font-semibold text-gray-900">
+                                ₹<%= listing.price %>
+                            </span>
+
+                            <span class="text-sm text-gray-500">
+                                / night
+                            </span>
+                        </div>
+
+
+                        <!-- BOOKING INPUT AREA -->
+                        <div class="border border-gray-300 rounded-xl">
+
+                            <!-- CHECK-IN / CHECK-OUT -->
+                            <div class="grid grid-cols-2">
+
+                                <!-- CHECK-IN -->
+                                <div id="checkInBox"
+                                    class="p-3.5 border-r border-gray-300 cursor-pointer hover:bg-gray-50 transition">
+
+                                    <p class="text-xs font-semibold text-gray-800 uppercase">
+                                        Check-in
+                                    </p>
+
+                                    <p id="checkInText" class="text-sm text-gray-500 mt-1">
+                                        Add date
+                                    </p>
+
+                                </div>
+
+
+                                <!-- CHECK-OUT -->
+                                <div id="checkOutBox" class="p-3.5 cursor-pointer hover:bg-gray-50 transition">
+
+                                    <p class="text-xs font-semibold text-gray-800 uppercase">
+                                        Check-out
+                                    </p>
+
+                                    <p id="checkOutText" class="text-sm text-gray-500 mt-1">
+                                        Add date
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <!-- CALENDAR -->
+                            <div id="calendarContainer" class="hidden border-t border-gray-300 bg-white p-4">
+
+                                <div class="flex items-center justify-between mb-4">
+
+                                    <!-- PREVIOUS MONTH -->
+                                    <button type="button" id="prevMonth"
+                                        class="w-8 h-8 rounded-full hover:bg-gray-100 transition flex items-center justify-center">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+
+                                        </svg>
+
+                                    </button>
+
+
+                                    <h3 id="calendarMonth" class="font-semibold text-gray-900">
+                                    </h3>
+
+
+                                    <!-- NEXT MONTH -->
+                                    <button type="button" id="nextMonth"
+                                        class="w-8 h-8 rounded-full hover:bg-gray-100 transition flex items-center justify-center">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+
+                                        </svg>
+
+                                    </button>
+
+                                </div>
+
+                                <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center text-sm">
+                                </div>
+
+                            </div>
+
+                            <div class="relative">
+                                <!-- GUESTS BOX -->
+                                <div id="guestsBox"
+                                    class=" border border-gray-300 rounded-xl cursor-pointer transition hover:border-gray-500">
+
+                                    <div class="px-5 py-4">
+
+                                        <p class="text-xs font-semibold text-gray-800 uppercase">
+                                            Guests
+                                        </p>
+
+                                        <div class="flex items-center justify-between">
+
+                                            <span id="guestsText" class="text-base text-gray-600">
+                                                1 guest
+                                            </span>
+
+                                            <!-- Chevron SVG -->
+                                            <svg id="guestsChevron" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                class="w-5 h-5 transition-transform duration-200">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                                            </svg>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div>
+                                <!-- GUEST DROPDOWN -->
+                                <div id="guestsDropdown"
+                                    class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-5 z-50">
+
+                                    <!-- Adults -->
+                                    <div class="flex items-center justify-between mb-6">
+
+                                        <div>
+                                            <p class="font-semibold text-gray-900">
+                                                Adults
+                                            </p>
+
+                                            <p class="text-sm text-gray-500">
+                                                Age 13+
+                                            </p>
+                                        </div>
+
+                                        <div class="flex items-center gap-3">
+
+                                            <button type="button"
+                                                class="guest-minus w-9 h-9 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="adults" aria-label="Decrease adults">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                            <span id="adultsCount" class="w-5 text-center">
+                                                1
+                                            </span>
+
+                                            <button type="button"
+                                                class="guest-plus w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="adults" aria-label="Increase adults">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 5v14M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Children -->
+                                    <div class="flex items-center justify-between mb-6">
+
+                                        <div>
+                                            <p class="font-semibold text-gray-900">
+                                                Children
+                                            </p>
+
+                                            <p class="text-sm text-gray-500">
+                                                Ages 2–12
+                                            </p>
+                                        </div>
+
+                                        <div class="flex items-center gap-3">
+
+                                            <!-- Minus -->
+                                            <button type="button"
+                                                class="guest-minus w-9 h-9 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="children" aria-label="Decrease children">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                            <span id="childrenCount" class="w-5 text-center">
+                                                0
+                                            </span>
+
+                                            <!-- Plus -->
+                                            <button type="button"
+                                                class="guest-plus w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="children" aria-label="Increase children">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 5v14M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Infants -->
+                                    <div class="flex items-center justify-between mb-6">
+
+                                        <div>
+                                            <p class="font-semibold text-gray-900">
+                                                Infants
+                                            </p>
+
+                                            <p class="text-sm text-gray-500">
+                                                Under 2
+                                            </p>
+                                        </div>
+
+                                        <div class="flex items-center gap-3">
+
+                                            <!-- Minus -->
+                                            <button type="button"
+                                                class="guest-minus w-9 h-9 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="infants" aria-label="Decrease infants">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                            <span id="infantsCount" class="w-5 text-center">
+                                                0
+                                            </span>
+
+                                            <!-- Plus -->
+                                            <button type="button"
+                                                class="guest-plus w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="infants" aria-label="Increase infants">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 5v14M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Pets -->
+                                    <div class="flex items-center justify-between">
+
+                                        <div>
+                                            <p class="font-semibold text-gray-900">
+                                                Pets
+                                            </p>
+
+                                            <p class="text-sm text-gray-500 underline">
+                                                Bringing a service animal?
+                                            </p>
+                                        </div>
+
+                                        <div class="flex items-center gap-3">
+
+                                            <!-- Minus -->
+                                            <button type="button"
+                                                class="guest-minus w-9 h-9 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="pets" aria-label="Decrease pets">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                            <span id="petsCount" class="w-5 text-center">
+                                                0
+                                            </span>
+
+                                            <!-- Plus -->
+                                            <button type="button"
+                                                class="guest-plus w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-gray-200 transition"
+                                                data-type="pets" aria-label="Increase pets">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 5v14M5 12h14" />
+                                                </svg>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- INFO -->
+                                    <p class="mt-6 text-sm text-gray-600 leading-5">
+                                        This place has a maximum of 10 guests,
+                                        not including infants.
+                                        Pets aren't allowed.
+                                    </p>
+
+
+                                    <!-- CLOSE -->
+                                    <div class="mt-5 text-right">
+
+                                        <button type="button" id="closeGuests"
+                                            class="text-sm font-semibold text-gray-800 hover:underline">
+                                            Close
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- RESERVE BUTTON -->
+                        <button type="button"
+                            class="w-full mt-5 bg-rose-500 hover:bg-rose-600 text-white py-3.5 rounded-xl font-semibold transition-all duration-200 shadow-sm hover:shadow-md">
+
+                            Check availability
+
+                        </button>
+
+
+                        <!-- INFO -->
+                        <p class="text-center text-sm text-gray-500 mt-4">
+                            You won't be charged yet
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- MAP SECTION -->
+                <section class="border-t pt-8 mt-10">
+
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                        Where you'll be
+                    </h2>
+
+                    <p class="text-gray-500 mb-5">
+                        <%= listing.location %>, <%= listing.country %>
+                    </p>
+
+                    <div id="map" class="w-full h-[400px] rounded-2xl overflow-hidden border shadow-sm">
+                    </div>
+
+                </section>
+
+            </main>
+
+            <!-- FOOTER -->
+            <%- include("../includes/footer.ejs") %>
+
+                <!-- Leaflet JS -->
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+                </script>
+
+                <script>
+
+                    // ==========================================
+                    // MAP
+                    // ==========================================
+
+                    const coordinates = JSON.parse(
+                        '<%- JSON.stringify(listing.geometry.coordinates) %>'
+                    );
+
+                    const longitude = coordinates[0];
+                    const latitude = coordinates[1];
+
+                    const map = L.map("map").setView(
+                        [latitude, longitude],
+                        13
+                    );
+
+                    L.tileLayer(
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        {
+                            attribution: "&copy; OpenStreetMap contributors"
+                        }
+                    ).addTo(map);
+
+
+                    // ==========================================
+                    // CUSTOM WANDERLUST MARKER
+                    // ==========================================
+
+                    const roseMarker = L.divIcon({
+
+                        className: "",
+
+                        html: `
+            <div class="w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    class="w-5 h-5"
+                >
+
+                    <path
+                        fill-rule="evenodd"
+                        d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 002.144-1.742 19.58 19.58 0 002.683-2.947c1.944-2.883 3.963-7.178 3.963-12.412a9.25 9.25 0 10-18.5 0c0 5.234 2.019 9.529 3.963 12.412a19.58 19.58 0 002.683 2.947 16.975 16.975 0 002.144 1.742zM12 13.5a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"
+                        clip-rule="evenodd"
+                    />
+
+                </svg>
+
+            </div>
+        `,
+
+                        iconSize: [40, 40],
+
+                        iconAnchor: [20, 40],
+
+                        popupAnchor: [0, -40]
+
+                    });
+
+
+                    // ==========================================
+                    // ADD MARKER
+                    // ==========================================
+
+                    L.marker(
+                        [latitude, longitude],
+                        {
+                            icon: roseMarker
+                        }
+                    )
+                        .addTo(map)
+                        .bindPopup(`
+            <strong><%= listing.title %></strong><br>
+            <%= listing.location %>, <%= listing.country %>
+        `);
+
+
+                    // ==========================================
+                    // DESCRIPTION - SMOOTH SHOW MORE / SHOW LESS
+                    // ==========================================
+
+                    const descriptionText =
+                        document.getElementById("descriptionText");
+
+                    const descriptionToggle =
+                        document.getElementById("descriptionToggle");
+
+                    const descriptionToggleText =
+                        document.getElementById("descriptionToggleText");
+
+                    const descriptionToggleIcon =
+                        document.getElementById("descriptionToggleIcon");
+
+
+                    if (descriptionText && descriptionToggle) {
+
+                        // ==========================================
+                        // INITIAL HEIGHT
+                        // ==========================================
+
+                        const lineHeight =
+                            parseFloat(
+                                getComputedStyle(descriptionText).lineHeight
+                            );
+
+                        const collapsedHeight =
+                            lineHeight * 3;
+
+                        const fullHeight =
+                            descriptionText.scrollHeight;
+
+
+                        // ==========================================
+                        // SHORT DESCRIPTION CHECK
+                        // ==========================================
+
+                        if (fullHeight <= collapsedHeight) {
+
+                            descriptionToggle.classList.add("hidden");
+
+                            descriptionText.style.height = "auto";
+
+                        }
+
+                        else {
+
+                            descriptionText.style.height =
+                                collapsedHeight + "px";
+
+                        }
+
+
+                        // ==========================================
+                        // SHOW MORE / SHOW LESS
+                        // ==========================================
+
+                        descriptionToggle.addEventListener(
+                            "click",
+                            function () {
+
+                                const currentHeight =
+                                    descriptionText.getBoundingClientRect().height;
+
+
+                                // ==========================================
+                                // SHOW MORE
+                                // ==========================================
+
+                                if (
+                                    Math.abs(
+                                        currentHeight - collapsedHeight
+                                    ) < 2
+                                ) {
+
+                                    descriptionText.style.height =
+                                        collapsedHeight + "px";
+
+                                    descriptionText.offsetHeight;
+
+                                    descriptionText.style.transition =
+                                        "height 400ms ease";
+
+                                    descriptionText.style.height =
+                                        fullHeight + "px";
+
+
+                                    descriptionToggleText.innerText =
+                                        "Show less";
+
+                                    descriptionToggleIcon.classList.add(
+                                        "rotate-180"
+                                    );
+
+
+                                    setTimeout(() => {
+
+                                        descriptionText.style.height =
+                                            "auto";
+
+                                    }, 400);
+
+                                }
+
+
+                                // ==========================================
+                                // SHOW LESS
+                                // ==========================================
+
+                                else {
+
+                                    const currentFullHeight =
+                                        descriptionText.scrollHeight;
+
+                                    descriptionText.style.height =
+                                        currentFullHeight + "px";
+
+                                    descriptionText.offsetHeight;
+
+                                    descriptionText.style.transition =
+                                        "height 400ms ease";
+
+                                    descriptionText.style.height =
+                                        collapsedHeight + "px";
+
+
+                                    descriptionToggleText.innerText =
+                                        "Show more";
+
+                                    descriptionToggleIcon.classList.remove(
+                                        "rotate-180"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // BOOKING CALENDAR
+                    // ==========================================
+
+                    const checkInBox =
+                        document.getElementById("checkInBox");
+
+                    const checkOutBox =
+                        document.getElementById("checkOutBox");
+
+                    const calendarContainer =
+                        document.getElementById("calendarContainer");
+
+                    const calendarMonth =
+                        document.getElementById("calendarMonth");
+
+                    const calendarDays =
+                        document.getElementById("calendarDays");
+
+                    const prevMonth =
+                        document.getElementById("prevMonth");
+
+                    const nextMonth =
+                        document.getElementById("nextMonth");
+
+
+                    // ==========================================
+                    // DATE TEXT ELEMENTS
+                    // ==========================================
+
+                    const checkInText =
+                        document.getElementById("checkInText");
+
+                    const checkOutText =
+                        document.getElementById("checkOutText");
+
+
+                    // ==========================================
+                    // SELECTED DATES
+                    // ==========================================
+
+                    let checkInDate = null;
+
+                    let checkOutDate = null;
+
+
+                    // ==========================================
+                    // CALENDAR MODE
+                    // ==========================================
+
+                    let calendarMode = "checkin";
+
+
+                    // ==========================================
+                    // CURRENT CALENDAR MONTH
+                    // ==========================================
+
+                    let calendarDate =
+                        new Date();
+
+
+                    // ==========================================
+                    // FORMAT BOOKING DATE
+                    // ==========================================
+
+                    function formatBookingDate(date) {
+
+                        return date.toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // OPEN CALENDAR
+                    // ==========================================
+
+                    function openCalendar() {
+
+                        calendarContainer.classList.remove(
+                            "hidden"
+                        );
+
+
+                        if (!checkInDate) {
+
+                            calendarMode =
+                                "checkin";
+
+                        }
+
+                        else if (!checkOutDate) {
+
+                            calendarMode =
+                                "checkout";
+
+                        }
+
+
+                        renderCalendar();
+
+                    }
+
+
+                    // ==========================================
+                    // CLOSE CALENDAR
+                    // ==========================================
+
+                    function closeCalendar() {
+
+                        calendarContainer.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // CHECK-IN CLICK
+                    // ==========================================
+
+                    if (checkInBox) {
+
+                        checkInBox.addEventListener(
+                            "click",
+                            function () {
+
+                                calendarMode =
+                                    "checkin";
+
+                                openCalendar();
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // CHECK-OUT CLICK
+                    // ==========================================
+
+                    if (checkOutBox) {
+
+                        checkOutBox.addEventListener(
+                            "click",
+                            function () {
+
+                                calendarMode =
+                                    "checkout";
+
+                                openCalendar();
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // RENDER CALENDAR
+                    // ==========================================
+
+                    function renderCalendar() {
+
+                        const year =
+                            calendarDate.getFullYear();
+
+                        const month =
+                            calendarDate.getMonth();
+
+
+                        // ==========================================
+                        // MONTH NAME
+                        // ==========================================
+
+                        const monthName =
+                            calendarDate.toLocaleString(
+                                "default",
+                                {
+                                    month: "long"
+                                }
+                            );
+
+
+                        calendarMonth.innerText =
+                            `${monthName} ${year}`;
+
+
+                        // Clear previous calendar
+                        calendarDays.innerHTML = "";
+
+
+                        // ==========================================
+                        // WEEK DAYS
+                        // ==========================================
+
+                        const weekDays = [
+                            "S",
+                            "M",
+                            "T",
+                            "W",
+                            "T",
+                            "F",
+                            "S"
+                        ];
+
+
+                        weekDays.forEach(
+                            function (day) {
+
+                                const dayElement =
+                                    document.createElement("div");
+
+
+                                dayElement.innerText =
+                                    day;
+
+
+                                dayElement.className =
+                                    "text-xs font-semibold text-gray-500 py-2";
+
+
+                                calendarDays.appendChild(
+                                    dayElement
+                                );
+
+                            }
+                        );
+
+
+                        // ==========================================
+                        // FIRST DAY OF MONTH
+                        // ==========================================
+
+                        const firstDay =
+                            new Date(
+                                year,
+                                month,
+                                1
+                            ).getDay();
+
+
+                        // ==========================================
+                        // DAYS IN MONTH
+                        // ==========================================
+
+                        const daysInMonth =
+                            new Date(
+                                year,
+                                month + 1,
+                                0
+                            ).getDate();
+
+
+                        // ==========================================
+                        // EMPTY SPACES
+                        // ==========================================
+
+                        for (
+                            let i = 0;
+                            i < firstDay;
+                            i++
+                        ) {
+
+                            const emptyDay =
+                                document.createElement("div");
+
+                            calendarDays.appendChild(
+                                emptyDay
+                            );
+
+                        }
+
+
+                        // ==========================================
+                        // CREATE DATE BUTTONS
+                        // ==========================================
+
+                        for (
+                            let day = 1;
+                            day <= daysInMonth;
+                            day++
+                        ) {
+
+                            const dayButton =
+                                document.createElement("button");
+
+
+                            dayButton.type =
+                                "button";
+
+
+                            dayButton.innerText =
+                                day;
+
+
+                            dayButton.className =
+                                "h-9 w-9 mx-auto rounded-full text-sm text-gray-700 hover:bg-rose-50 hover:text-rose-500 transition";
+
+
+                            // ==========================================
+                            // CREATE FULL DATE
+                            // ==========================================
+
+                            const selectedDate =
+                                new Date(
+                                    year,
+                                    month,
+                                    day
+                                );
+
+
+                            // ==========================================
+                            // REMOVE TIME
+                            // ==========================================
+
+                            selectedDate.setHours(
+                                0,
+                                0,
+                                0,
+                                0
+                            );
+
+
+                            // ==========================================
+                            // TODAY
+                            // ==========================================
+
+                            const today =
+                                new Date();
+
+                            today.setHours(
+                                0,
+                                0,
+                                0,
+                                0
+                            );
+
+
+                            // ==========================================
+                            // DISABLE PAST DATES
+                            // ==========================================
+
+                            if (
+                                selectedDate < today
+                            ) {
+
+                                dayButton.disabled =
+                                    true;
+
+
+                                dayButton.classList.add(
+                                    "text-gray-300",
+                                    "cursor-not-allowed"
+                                );
+
+
+                                dayButton.classList.remove(
+                                    "hover:bg-rose-50",
+                                    "hover:text-rose-500"
+                                );
+
+                            }
+
+
+                            // ==========================================
+                            // CHECK-OUT VALIDATION
+                            // ==========================================
+
+                            if (
+                                calendarMode === "checkout" &&
+                                checkInDate &&
+                                selectedDate <= checkInDate
+                            ) {
+
+                                dayButton.disabled =
+                                    true;
+
+
+                                dayButton.classList.add(
+                                    "text-gray-300",
+                                    "cursor-not-allowed"
+                                );
+
+
+                                dayButton.classList.remove(
+                                    "hover:bg-rose-50",
+                                    "hover:text-rose-500"
+                                );
+
+                            }
+
+
+                            // ==========================================
+                            // SELECTED CHECK-IN
+                            // ==========================================
+
+                            if (
+                                checkInDate &&
+                                selectedDate.getTime() ===
+                                checkInDate.getTime()
+                            ) {
+
+                                dayButton.classList.remove(
+                                    "text-gray-700"
+                                );
+
+
+                                dayButton.classList.add(
+                                    "bg-rose-500",
+                                    "text-white",
+                                    "font-semibold"
+                                );
+
+                            }
+
+
+                            // ==========================================
+                            // SELECTED CHECK-OUT
+                            // ==========================================
+
+                            if (
+                                checkOutDate &&
+                                selectedDate.getTime() ===
+                                checkOutDate.getTime()
+                            ) {
+
+                                dayButton.classList.remove(
+                                    "text-gray-700"
+                                );
+
+
+                                dayButton.classList.add(
+                                    "bg-rose-500",
+                                    "text-white",
+                                    "font-semibold"
+                                );
+
+                            }
+
+
+                            // ==========================================
+                            // DATE CLICK
+                            // ==========================================
+
+                            dayButton.addEventListener(
+                                "click",
+                                function () {
+
+                                    // ==========================================
+                                    // CHECK-IN
+                                    // ==========================================
+
+                                    if (
+                                        calendarMode === "checkin"
+                                    ) {
+
+                                        checkInDate =
+                                            selectedDate;
+
+                                        checkOutDate =
+                                            null;
+
+
+                                        checkInText.innerText =
+                                            formatBookingDate(
+                                                checkInDate
+                                            );
+
+
+                                        checkInText.classList.remove(
+                                            "text-gray-500"
+                                        );
+
+
+                                        checkInText.classList.add(
+                                            "text-gray-900",
+                                            "font-medium"
+                                        );
+
+
+                                        checkOutText.innerText =
+                                            "Add date";
+
+
+                                        checkOutText.classList.remove(
+                                            "text-gray-900",
+                                            "font-medium"
+                                        );
+
+
+                                        checkOutText.classList.add(
+                                            "text-gray-500"
+                                        );
+
+
+                                        // Move to checkout
+                                        calendarMode =
+                                            "checkout";
+
+
+                                        renderCalendar();
+
+                                        return;
+
+                                    }
+
+
+                                    // ==========================================
+                                    // CHECK-OUT
+                                    // ==========================================
+
+                                    if (
+                                        calendarMode === "checkout"
+                                    ) {
+
+                                        if (
+                                            selectedDate <= checkInDate
+                                        ) {
+
+                                            return;
+
+                                        }
+
+
+                                        checkOutDate =
+                                            selectedDate;
+
+
+                                        checkOutText.innerText =
+                                            formatBookingDate(
+                                                checkOutDate
+                                            );
+
+
+                                        checkOutText.classList.remove(
+                                            "text-gray-500"
+                                        );
+
+
+                                        checkOutText.classList.add(
+                                            "text-gray-900",
+                                            "font-medium"
+                                        );
+
+
+                                        // Close calendar
+                                        closeCalendar();
+
+                                    }
+
+                                }
+                            );
+
+
+                            calendarDays.appendChild(
+                                dayButton
+                            );
+
+                        }
+
+                    }
+
+
+                    // ==========================================
+                    // PREVIOUS MONTH
+                    // ==========================================
+
+                    if (prevMonth) {
+
+                        prevMonth.addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.stopPropagation();
+
+
+                                calendarDate.setMonth(
+                                    calendarDate.getMonth() - 1
+                                );
+
+
+                                renderCalendar();
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // NEXT MONTH
+                    // ==========================================
+
+                    if (nextMonth) {
+
+                        nextMonth.addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.stopPropagation();
+
+
+                                calendarDate.setMonth(
+                                    calendarDate.getMonth() + 1
+                                );
+
+
+                                renderCalendar();
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // INITIAL CALENDAR RENDER
+                    // ==========================================
+
+                    renderCalendar();
+
+
+
+                    // ==================================================
+                    // GUESTS DROPDOWN
+                    // ==================================================
+
+                    const guestBox =
+                        document.getElementById("guestsBox");
+
+                    const guestDropdown =
+                        document.getElementById("guestsDropdown");
+
+                    const guestCount =
+                        document.getElementById("guestsText");
+
+                    const guestArrow =
+                        document.getElementById("guestsChevron");
+
+                    const closeGuests =
+                        document.getElementById("closeGuests");
+
+
+                    // ==========================================
+                    // GUEST COUNTS
+                    // ==========================================
+
+                    const guestCounts = {
+
+                        adults: 1,
+
+                        children: 0,
+
+                        infants: 0,
+
+                        pets: 0
+
+                    };
+
+
+                    // ==========================================
+                    // MAXIMUM GUESTS
+                    // ==========================================
+
+                    const maxGuests = 10;
+
+
+                    // ==========================================
+                    // CALCULATE TOTAL GUESTS
+                    // ==========================================
+
+                    function getTotalGuests() {
+
+                        return (
+                            guestCounts.adults +
+                            guestCounts.children
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // UPDATE MAIN GUEST TEXT
+                    // ==========================================
+
+                    function updateGuestText() {
+
+                        const totalGuests =
+                            getTotalGuests();
+
+
+                        if (totalGuests === 1) {
+
+                            guestCount.innerText =
+                                "1 guest";
+
+                        }
+
+                        else {
+
+                            guestCount.innerText =
+                                `${totalGuests} guests`;
+
+                        }
+
+                    }
+
+
+                    // ==========================================
+                    // UPDATE INDIVIDUAL COUNTS
+                    // ==========================================
+
+                    function updateIndividualCounts() {
+
+                        const adultsCount =
+                            document.getElementById(
+                                "adultsCount"
+                            );
+
+                        const childrenCount =
+                            document.getElementById(
+                                "childrenCount"
+                            );
+
+                        const infantsCount =
+                            document.getElementById(
+                                "infantsCount"
+                            );
+
+                        const petsCount =
+                            document.getElementById(
+                                "petsCount"
+                            );
+
+
+                        if (adultsCount) {
+
+                            adultsCount.innerText =
+                                guestCounts.adults;
+
+                        }
+
+
+                        if (childrenCount) {
+
+                            childrenCount.innerText =
+                                guestCounts.children;
+
+                        }
+
+
+                        if (infantsCount) {
+
+                            infantsCount.innerText =
+                                guestCounts.infants;
+
+                        }
+
+
+                        if (petsCount) {
+
+                            petsCount.innerText =
+                                guestCounts.pets;
+
+                        }
+
+                    }
+
+
+                    // ==========================================
+                    // OPEN / CLOSE GUEST DROPDOWN
+                    // ==========================================
+
+                    if (guestBox && guestDropdown) {
+
+                        guestBox.addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.stopPropagation();
+
+
+                                const isHidden =
+                                    guestDropdown.classList.contains(
+                                        "hidden"
+                                    );
+
+
+                                guestDropdown.classList.toggle(
+                                    "hidden"
+                                );
+
+
+                                if (guestArrow) {
+
+                                    guestArrow.classList.toggle(
+                                        "rotate-180"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // PLUS BUTTONS
+                    // ==========================================
+
+                    const guestPlusButtons =
+                        document.querySelectorAll(
+                            ".guest-plus"
+                        );
+
+
+                    guestPlusButtons.forEach(
+                        function (button) {
+
+                            button.addEventListener(
+                                "click",
+                                function (event) {
+
+                                    event.stopPropagation();
+
+
+                                    const type =
+                                        button.dataset.type;
+
+
+                                    // ==========================================
+                                    // MAXIMUM GUEST CHECK
+                                    // ==========================================
+
+                                    if (
+                                        (type === "adults" ||
+                                            type === "children") &&
+                                        getTotalGuests() >= maxGuests
+                                    ) {
+
+                                        return;
+
+                                    }
+
+
+                                    // ==========================================
+                                    // INCREASE COUNT
+                                    // ==========================================
+
+                                    guestCounts[type]++;
+
+
+                                    // Update UI
+                                    updateIndividualCounts();
+
+                                    updateGuestText();
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                    // ==========================================
+                    // MINUS BUTTONS
+                    // ==========================================
+
+                    const guestMinusButtons =
+                        document.querySelectorAll(
+                            ".guest-minus"
+                        );
+
+
+                    guestMinusButtons.forEach(
+                        function (button) {
+
+                            button.addEventListener(
+                                "click",
+                                function (event) {
+
+                                    event.stopPropagation();
+
+
+                                    const type =
+                                        button.dataset.type;
+
+
+                                    // ==========================================
+                                    // ADULTS MINIMUM = 1
+                                    // ==========================================
+
+                                    if (
+                                        type === "adults" &&
+                                        guestCounts.adults <= 1
+                                    ) {
+
+                                        return;
+
+                                    }
+
+
+                                    // ==========================================
+                                    // OTHER COUNTS MINIMUM = 0
+                                    // ==========================================
+
+                                    if (
+                                        guestCounts[type] <= 0
+                                    ) {
+
+                                        return;
+
+                                    }
+
+
+                                    // ==========================================
+                                    // DECREASE COUNT
+                                    // ==========================================
+
+                                    guestCounts[type]--;
+
+
+                                    // Update UI
+                                    updateIndividualCounts();
+
+                                    updateGuestText();
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                    // ==========================================
+                    // CLOSE BUTTON
+                    // ==========================================
+
+                    if (closeGuests) {
+
+                        closeGuests.addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.stopPropagation();
+
+
+                                guestDropdown.classList.add(
+                                    "hidden"
+                                );
+
+
+                                if (guestArrow) {
+
+                                    guestArrow.classList.remove(
+                                        "rotate-180"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // CLOSE GUEST DROPDOWN
+                    // WHEN CLICKING OUTSIDE
+                    // ==========================================
+
+                    document.addEventListener(
+                        "click",
+                        function (event) {
+
+                            if (
+                                guestBox &&
+                                guestDropdown &&
+                                !guestBox.contains(event.target) &&
+                                !guestDropdown.contains(event.target)
+                            ) {
+
+                                guestDropdown.classList.add(
+                                    "hidden"
+                                );
+
+
+                                if (guestArrow) {
+
+                                    guestArrow.classList.remove(
+                                        "rotate-180"
+                                    );
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+
+                    // ==========================================
+                    // INITIAL GUEST UI
+                    // ==========================================
+
+                    updateIndividualCounts();
+
+                    updateGuestText();
+
+                </script>
+
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!-- SUCCESS FLASH MESSAGE -->
+<% if(success && success.length) { %>
+
+    <div id="flash-message"
+        class="fixed top-5 right-5 z-[9999] bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 min-w-[300px] transition-all duration-500">
+        <span class="font-medium">
+            <%= success %>
+        </span>
+
+        <button onclick="document.getElementById('flash-message').remove()"
+            class="text-white text-lg font-bold hover:opacity-80">
+            ×
+        </button>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const flash = document.getElementById("flash-message");
+
+            if (flash) {
+                flash.style.opacity = "0";
+                flash.style.transform = "translateY(-20px)";
+
+                setTimeout(() => {
+                    flash.remove();
+                }, 500);
+            }
+        }, 3000);
+    </script>
+
+    <% } %>
+
+
+
+        <!-- ERROR FLASH MESSAGE -->
+        <% if(error && error.length) { %>
+
+            <div id="error-flash-message"
+                class="fixed top-5 right-5 z-[9999] bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 min-w-[300px] transition-all duration-500">
+                <span class="font-medium">
+                    <%= error %>
+                </span>
+
+                <button onclick="document.getElementById('error-flash-message').remove()"
+                    class="text-white text-lg font-bold hover:opacity-80">
+                    ×
+                </button>
+            </div>
+
+            <script>
+                setTimeout(() => {
+                    const flash = document.getElementById("error-flash-message");
+
+                    if (flash) {
+                        flash.style.opacity = "0";
+                        flash.style.transform = "translateY(-20px)";
+
+                        setTimeout(() => {
+                            flash.remove();
+                        }, 500);
+                    }
+                }, 3000);
+            </script>
+
+            <% } %>

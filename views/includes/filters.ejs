@@ -1,0 +1,352 @@
+<section id="filterBar"
+    class="bg-white border-b border-gray-200 sticky top-[76px] z-40 transition-all duration-500 ease-in-out will-change-transform">
+
+    <div class="max-w-7xl mx-auto px-4">
+
+        <div class="relative flex items-center">
+            <!-- LEFT ARROW -->
+            <button id="scrollLeft"
+                class="hidden lg:flex absolute left-0 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center hover:shadow-lg transition-all duration-300">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+
+                </svg>
+
+            </button>
+
+            <!-- FILTERS -->
+            <div id="filtersContainer" class="flex items-center gap-10 overflow-x-auto py-3 px-12">
+
+                <!-- Mountain -->
+                <a href="/listings/category/mountain" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'mountain'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'mountain'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 20h18L14 8l-3 4-2-3-6 11z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'mountain'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Mountain
+                    </span>
+
+                </a>
+
+
+                <!-- Beach -->
+                <a href="/listings/category/beach" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'beach'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'beach'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'beach'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Beach
+                    </span>
+
+                </a>
+
+
+                <!-- Camping -->
+                <a href="/listings/category/camping" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'camping'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'camping'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 4l7 14H5L12 4z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'camping'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Camping
+                    </span>
+
+                </a>
+
+
+                <!-- Cabins -->
+                <a href="/listings/category/cabins" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'cabins'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'cabins'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M4 20V10l8-6 8 6v10M9 20v-6h6v6" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'cabins'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Cabins
+                    </span>
+
+                </a>
+
+
+                <!-- Tropical -->
+                <a href="/listings/category/tropical" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'tropical'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'tropical'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3v18M12 8c2-3 5-4 7-4-1 3-3 6-7 7M12 8C10 5 7 4 5 4c1 3 3 6 7 7" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'tropical'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Tropical
+                    </span>
+
+                </a>
+
+
+                <!-- Castles -->
+                <a href="/listings/category/castles" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'castles'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'castles'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M4 20V8l3 2V6l5 2 5-2v4l3-2v12H4z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'castles'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Castles
+                    </span>
+
+                </a>
+
+
+                <!-- Lakefront -->
+                <a href="/listings/category/lakefront" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'lakefront'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'lakefront'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'lakefront'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Lakefront
+                    </span>
+
+                </a>
+
+
+                <!-- Island -->
+                <a href="/listings/category/island" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'island'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'island'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <circle cx="12" cy="12" r="8" stroke-width="1.8" />
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M8 16c1-2 2-3 4-3s3 1 4 3" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'island'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Island
+                    </span>
+
+                </a>
+
+
+                <!-- Amazing Views -->
+                <a href="/listings/category/amazing-views" class="group flex flex-col items-center justify-center gap-2 min-w-[110px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'amazing-views'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'amazing-views'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3l2.4 5 5.6.5-4.2 3.6 1.3 5.4L12 15.8 6.9 17.5l1.3-5.4L4 8.5 9.6 8 12 3z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'amazing-views'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Amazing Views
+                    </span>
+
+                </a>
+
+
+                <!-- Tiny Homes -->
+                <a href="/listings/category/tiny-homes" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'tiny-homes'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'tiny-homes'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M6 20V10l6-5 6 5v10M9 20v-4h6v4" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'tiny-homes'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Tiny Homes
+                    </span>
+
+                </a>
+
+
+                <!-- Tree Houses -->
+                <a href="/listings/category/tree-houses" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'tree-houses'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'tree-houses'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3v18M8 8c2-2 6-2 8 0M7 13c2-2 8-2 10 0" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'tree-houses'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Tree Houses
+                    </span>
+
+                </a>
+
+
+                <!-- Farms -->
+                <a href="/listings/category/farms" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'farms'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'farms'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M4 20h16M8 20v-8h8v8M10 12V8h4v4" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'farms'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Farms
+                    </span>
+
+                </a>
+
+
+                <!-- City -->
+                <a href="/listings/category/city" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'city'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'city'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M5 20V6h5v14M14 20V4h5v16" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'city'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        City
+                    </span>
+
+                </a>
+
+
+                <!-- Arctic -->
+                <a href="/listings/category/arctic" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'arctic'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'arctic'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3v18M5 8h14M7 16h10" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'arctic'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Arctic
+                    </span>
+
+                </a>
+
+
+                <!-- Desert -->
+                <a href="/listings/category/desert" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'desert'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'desert'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 18c3-3 6-3 9 0s6 3 9 0" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'desert'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Desert
+                    </span>
+
+                </a>
+
+
+                <!-- Luxury -->
+                <a href="/listings/category/luxury" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'luxury'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'luxury'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3l2.2 6.8H21l-5.5 4 2.1 6.2L12 16.8 6.4 20l2.1-6.2L3 9.8h6.8L12 3z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'luxury'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Luxury
+                    </span>
+
+                </a>
+
+
+                <!-- National Parks -->
+                <a href="/listings/category/national-parks" class="group flex flex-col items-center justify-center gap-2 min-w-[110px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'national-parks'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'national-parks'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3l7 17H5L12 3z" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'national-parks'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        National Parks
+                    </span>
+
+                </a>
+
+
+                <!-- Rooms -->
+                <a href="/listings/category/rooms" class="group flex flex-col items-center justify-center gap-2 min-w-[92px] pb-3 border-b-2 transition-all duration-300 <%= selectedCategory === 'rooms'? 'border-rose-500': 'border-transparent hover:border-rose-500' %>">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 transition <%= selectedCategory === 'rooms'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M5 20V7h14v13M5 12h14" />
+
+                    </svg>
+
+                    <span class="text-[13px] font-medium transition <%= selectedCategory === 'rooms'? 'text-rose-500': 'text-gray-500 group-hover:text-rose-500' %>">
+                        Rooms
+                    </span>
+
+                </a>
+
+            </div>
+
+            <!-- RIGHT ARROW -->
+            <button id="scrollRight"
+                class="hidden lg:flex absolute right-0 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center hover:shadow-lg transition-all duration-300">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+<script src="/js/filters.js"></script>

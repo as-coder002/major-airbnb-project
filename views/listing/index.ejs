@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wanderlust | Listings</title>
+
+    <!-- Tailwind CSS CDN (jodi already setup na thake) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-gray-50">
+    <!--FOR FLASH MEASSAGE-->
+    <%- include("../includes/flash.ejs") %>
+
+        <!-- HEADER -->
+        <%- include("../includes/navbar.ejs") %>
+
+            <!-- FILTERS -->
+            <%- include("../includes/filters.ejs") %>
+
+                <!-- MAIN CONTENT -->
+                <main class="max-w-7xl mx-auto px-4 py-8">
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                        <h2 class="text-2xl font-semibold">
+                            Available stays
+                        </h2>
+
+                        <a href="/listings/new"
+                            class="inline-flex items-center justify-center bg-rose-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-rose-600 transition shadow-sm w-fit">
+                            + Add New Listing
+                        </a>
+                    </div>
+
+                    <!-- LISTINGS GRID / EMPTY STATE -->
+
+                    <% if (allListings.length> 0) { %>
+
+                        <!-- LISTINGS GRID -->
+                        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+                            <% for(let listing of allListings) { %>
+
+                                <a href="/listings/<%= listing._id %>"
+                                    class="group block rounded-2xl overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+
+                                    <!-- IMAGE -->
+                                    <div
+                                        class="relative h-64 overflow-hidden rounded-3xl transition-all duration-500 group-hover:rounded-br-none group-hover:rounded-bl-none">
+
+                                        <% if (listing.image && listing.image.length> 0) { %>
+
+                                            <img src="<%= listing.image[0].url %>" alt="<%= listing.title %>"
+                                                class="w-full h-full object-cover transition duration-500 hover:scale-105">
+
+                                            <% } else { %>
+
+                                                <div class="w-full h-full flex items-center justify-center bg-gray-100">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor" stroke-width="1.5">
+
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M4 16l4-4 3 3 4-5 5 6M4 19h16a1 1 0 001-1V6a1 1 0 00-1-1H4a1 1 0 00-1 1v12a1 1 0 001 1z" />
+
+                                                    </svg>
+
+                                                </div>
+
+                                                <% } %>
+
+                                                    <!-- Wishlist Button (UI Only) -->
+                                                    <button type="button" onclick="event.preventDefault();"
+                                                        class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center hover:scale-110  transition">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="w-6 h-6 text-gray-600 group-hover:text-rose-500 transition"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M4.318 6.318c1.562-1.562 4.094-1.562 5.656 0L12 8.343l2.026-2.025c1.562-1.562 4.094-1.562 5.656 0 1.562 1.562 1.562 4.094 0 5.656L12 19.657l-7.682-7.683c-1.562-1.562-1.562-4.094 0-5.656z" />
+
+                                                        </svg>
+
+                                                    </button>
+
+                                    </div>
+
+                                    <!-- CONTENT -->
+                                    <div class="p-4">
+
+                                        <!-- TITLE -->
+                                        <h3 class="text-xl font-semibold text-gray-900 truncate">
+                                            <%= listing.title %>
+                                        </h3>
+
+                                        <!-- LOCATION -->
+                                        <div class="flex items-center gap-1 mt-2 text-gray-500 text-sm">
+
+                                            <!-- Location Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4 text-rose-500 flex-shrink-0" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
+
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+
+                                            </svg>
+
+                                            <span class="truncate">
+                                                <%= listing.location %>, <%= listing.country %>
+                                            </span>
+
+                                        </div>
+
+                                        <!-- DESCRIPTION -->
+                                        <p class="text-gray-600 text-sm mt-3 line-clamp-2">
+                                            <%= listing.description %>
+                                        </p>
+
+                                        <!-- PRICE -->
+                                        <div class="mt-5">
+
+                                            <span class="text-lg font-bold text-gray-900">
+                                                ₹<%= listing.price %>
+                                            </span>
+
+                                            <span class="text-gray-500 text-sm">
+                                                / night
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                                <% } %>
+
+                        </section>
+
+                        <% } else { %>
+
+                            <!-- EMPTY STATE -->
+                            <section class="min-h-[420px] flex items-center justify-center px-4">
+
+                                <div class="text-center max-w-lg">
+
+                                    <!-- ICON -->
+                                    <div
+                                        class="mx-auto w-20 h-20 rounded-full bg-rose-50 flex items-center justify-center">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-rose-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z" />
+
+                                            <circle cx="12" cy="10" r="3" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <!-- TITLE -->
+                                    <h2 class="mt-6 text-2xl sm:text-3xl font-bold text-gray-900">
+
+                                        No stays found
+
+                                    </h2>
+
+
+                                    <!-- DESCRIPTION -->
+                                    <p class="mt-3 text-gray-500 text-sm sm:text-base leading-relaxed">
+
+                                        We couldn't find any stays in
+                                        <span class="font-semibold text-gray-700">
+                                            "<%= selectedCategory %>"
+                                        </span>.
+
+                                        Try exploring another category or browse all available stays.
+
+                                    </p>
+
+
+                                    <!-- BUTTON -->
+                                    <a href="/listings"
+                                        class="inline-flex items-center justify-center mt-7 px-6 py-3 rounded-full bg-rose-500 text-white font-medium shadow-md hover:bg-rose-600 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+
+                                        Explore All Listings
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 12h14M13 6l6 6-6 6" />
+
+                                        </svg>
+
+                                    </a>
+
+                                </div>
+
+                            </section>
+
+                            <% } %>
+
+                </main>
+
+                <!-- FOOTER -->
+                <%- include("../includes/footer.ejs") %>
+
+</body>
+
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Listing | Wanderlust</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!--FOR FLASH MEASSAGE-->
+    <%- include("../includes/flash.ejs") %>
+
+        <!-- HEADER -->
+        <%- include("../includes/navbar.ejs") %>
+
+            <!-- MAIN -->
+            <main class="max-w-3xl mx-auto px-4 py-10">
+
+                <h1 class="text-3xl font-semibold mb-8 text-center">
+                    Edit your listing
+                </h1>
+
+                <!-- EDIT FORM -->
+                <form action="/listings/<%= listing._id %>?_method=PUT" method="POST"
+                    class="bg-white p-8 rounded-xl shadow-md space-y-6" enctype="multipart/form-data">
+
+                    <!-- TITLE -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Title</label>
+                        <input type="text" name="listing[title]" value="<%= listing.title %>"
+                            class="w-full border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-rose-400 outline-none"
+                            required />
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Description</label>
+                        <textarea name="listing[description]" rows="4"
+                            class="w-full border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-rose-400 outline-none"
+                            required><%= listing.description %></textarea>
+                    </div>
+
+                    <!-- CURRENT PHOTOS -->
+                    <div>
+
+                        <div class="flex items-center justify-between mb-4">
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-800">
+                                    Current Photos
+                                </label>
+
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Replace any photo or add new ones.
+                                </p>
+                            </div>
+
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-semibold">
+
+                                <%= listing.image.length %> / 5 photos
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- PHOTO GRID -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+
+                            <% listing.image.forEach((image, index)=> { %>
+
+                                <div
+                                    class="relative group aspect-square rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 shadow-sm">
+
+                                    <!-- IMAGE -->
+                                    <img src="<%= image.url %>" alt="Listing photo <%= index + 1 %>"
+                                        class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+
+
+                                    <!-- IMAGE NUMBER -->
+                                    <div
+                                        class="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center text-xs font-semibold text-gray-700">
+
+                                        <%= index + 1 %>
+
+                                    </div>
+
+
+                                    <!-- REPLACE BUTTON -->
+                                    <label for="replaceImage<%= index %>"
+                                        class="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/95 backdrop-blur-sm shadow-md text-sm font-semibold text-gray-800 cursor-pointer hover:bg-rose-500 hover:text-white transition duration-300">
+
+                                        <!-- Replace Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7" />
+
+                                        </svg>
+
+                                        Replace
+
+                                    </label>
+
+
+                                    <!-- HIDDEN REPLACE INPUT -->
+                                    <input id="replaceImage<%= index %>" type="file" name="replaceImage<%= index %>"
+                                        accept="image/*" class="hidden" data-index="<%= index %>">
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ADD NEW PHOTOS -->
+                    <div>
+
+                        <div class="mb-3">
+
+                            <label class="block text-sm font-semibold text-gray-800">
+                                Add New Photos
+                            </label>
+
+                            <p class="text-xs text-gray-500 mt-1">
+                                You can add more photos if your listing has fewer than 5.
+                            </p>
+
+                        </div>
+
+
+                        <!-- UPLOAD AREA -->
+                        <label for="image"
+                            class="flex flex-col items-center justify-center w-full h-52 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer bg-gray-50 hover:border-rose-400 hover:bg-rose-50 transition duration-300">
+
+                            <!-- ICON -->
+                            <div class="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center mb-3">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14" />
+
+                                </svg>
+
+                            </div>
+
+
+                            <!-- TEXT -->
+                            <p class="text-gray-700 font-semibold">
+                                Click to add photos
+                            </p>
+
+                            <p class="text-sm text-gray-400 mt-1">
+                                PNG, JPG or JPEG • Maximum 5 photos
+                            </p>
+
+
+                            <!-- FILE INPUT -->
+                            <input id="image" type="file" name="listing[image]" accept="image/*" multiple
+                                class="hidden">
+
+                        </label>
+
+
+                        <!-- SELECTED PHOTOS PREVIEW -->
+                        <div id="newPhotosPreview" class="hidden mt-5">
+
+                            <div class="flex items-center justify-between mb-3">
+
+                                <p class="text-sm font-semibold text-gray-800">
+                                    Selected Photos
+                                </p>
+
+                                <span id="selectedPhotoCount" class="text-xs font-medium text-gray-500">
+                                </span>
+
+                            </div>
+
+
+                            <div id="previewGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PRICE -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Price (per night)</label>
+                        <input type="number" name="listing[price]" value="<%= listing.price %>" min="0"
+                            class="w-full border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-rose-400 outline-none"
+                            required />
+                    </div>
+
+                    <!-- LOCATION -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Location</label>
+                        <input type="text" name="listing[location]" value="<%= listing.location %>"
+                            class="w-full border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-rose-400 outline-none"
+                            required />
+                    </div>
+
+                    <!-- COUNTRY -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Country</label>
+                        <input type="text" name="listing[country]" value="<%= listing.country %>"
+                            class="w-full border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-rose-400 outline-none"
+                            required />
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <div class="relative">
+
+                        <label class="block text-sm font-medium mb-2">
+                            Category
+                        </label>
+
+                        <div class="relative">
+
+                            <!-- Custom Dropdown Button -->
+                            <button type="button" id="categoryDropdownBtn"
+                                class="w-full flex items-center justify-between bg-white border border-gray-300 rounded-xl px-4 py-3.5 text-left outline-none hover:border-gray-400 focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all duration-200">
+
+                                <div class="flex items-center gap-3">
+
+                                    <!-- Category Icon -->
+                                    <div class="w-9 h-9 rounded-lg bg-rose-50 flex items-center justify-center">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4 7h16M4 12h16M4 17h16" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <span id="selectedCategory" class="text-gray-800 text-sm font-medium">
+                                        <%= listing.category %>
+                                    </span>
+
+                                </div>
+
+                                <!-- Arrow -->
+                                <svg id="categoryArrow" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 text-gray-400 transition-transform duration-200" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+
+                                </svg>
+
+                            </button>
+
+
+                            <!-- Dropdown Menu -->
+                            <div id="categoryDropdown"
+                                class="hidden absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
+
+                                <div class="max-h-64 overflow-y-auto p-2">
+
+                                    <button type="button" data-value="beach"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Beach
+                                    </button>
+
+                                    <button type="button" data-value="mountain"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Mountain
+                                    </button>
+
+                                    <button type="button" data-value="camping"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Camping
+                                    </button>
+
+                                    <button type="button" data-value="cabins"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Cabins
+                                    </button>
+
+                                    <button type="button" data-value="tropical"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Tropical
+                                    </button>
+
+                                    <button type="button" data-value="castles"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Castles
+                                    </button>
+
+                                    <button type="button" data-value="lakefront"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Lakefront
+                                    </button>
+
+                                    <button type="button" data-value="island"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Island
+                                    </button>
+
+                                    <button type="button" data-value="amazing-views"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Amazing Views
+                                    </button>
+
+                                    <button type="button" data-value="tiny-homes"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Tiny Homes
+                                    </button>
+
+                                    <button type="button" data-value="tree-houses"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Tree Houses
+                                    </button>
+
+                                    <button type="button" data-value="farms"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Farms
+                                    </button>
+
+                                    <button type="button" data-value="city"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        City
+                                    </button>
+
+                                    <button type="button" data-value="arctic"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Arctic
+                                    </button>
+
+                                    <button type="button" data-value="desert"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Desert
+                                    </button>
+
+                                    <button type="button" data-value="luxury"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Luxury
+                                    </button>
+
+                                    <button type="button" data-value="national-parks"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        National Parks
+                                    </button>
+
+                                    <button type="button" data-value="rooms"
+                                        class="category-option w-full text-left px-4 py-3 rounded-xl text-sm hover:bg-rose-50 hover:text-rose-600 transition">
+                                        Rooms
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Hidden input -->
+                        <input type="hidden" id="categoryInput" name="listing[category]" value="<%= listing.category %>"
+                            required>
+
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="flex justify-end gap-4 pt-4">
+                        <a href="/listings/<%= listing._id %>"
+                            class="px-5 py-2.5 rounded-lg border text-gray-600 hover:bg-gray-100 transition">
+                            Cancel
+                        </a>
+
+                        <button type="submit"
+                            class="px-6 py-2.5 rounded-lg bg-rose-500 text-white font-medium hover:bg-rose-600 transition">
+                            Update listing
+                        </button>
+                    </div>
+
+                </form>
+
+                <div id="listingData" data-existing-photos="<%= listing.image.length %>" class="hidden">
+                </div>
+
+            </main>
+
+            <!-- FOOTER -->
+            <%- include("../includes/footer.ejs") %>
+
+                <!-- JavaScript for File Info -->
+                <script>
+
+                    // ==========================================
+                    // IMAGE INPUT
+                    // ==========================================
+
+                    const imageInput =
+                        document.getElementById("image");
+
+                    const newPhotosPreview =
+                        document.getElementById("newPhotosPreview");
+
+                    const previewGrid =
+                        document.getElementById("previewGrid");
+
+                    const selectedPhotoCount =
+                        document.getElementById("selectedPhotoCount");
+
+
+                    const listingData =
+                        document.getElementById("listingData");
+
+                    const existingPhotoCount =
+                        Number(listingData.dataset.existingPhotos);
+
+
+                    // Maximum images allowed
+                    const maxPhotos = 5;
+
+
+                    // ==========================================
+                    // IMAGE SELECTION
+                    // ==========================================
+
+                    imageInput.addEventListener("change", function () {
+
+                        const files =
+                            Array.from(this.files);
+
+
+                        // ==========================================
+                        // CALCULATE TOTAL IMAGES
+                        // ==========================================
+
+                        const totalPhotos =
+                            existingPhotoCount + files.length;
+
+
+                        // ==========================================
+                        // CHECK MAXIMUM 5 PHOTOS
+                        // ==========================================
+
+                        if (totalPhotos > maxPhotos) {
+
+                            const remainingSlots =
+                                maxPhotos - existingPhotoCount;
+
+
+                            if (remainingSlots <= 0) {
+
+                                alert(
+                                    "This listing already has 5 photos. You cannot add more."
+                                );
+
+                            } else {
+
+                                alert(
+                                    `You can add only ${remainingSlots} more photo${remainingSlots > 1 ? "s" : ""}.`
+                                );
+
+                            }
+
+
+                            // Reset input
+                            imageInput.value = "";
+
+                            // Clear preview
+                            previewGrid.innerHTML = "";
+
+                            newPhotosPreview.classList.add("hidden");
+
+                            selectedPhotoCount.innerText = "";
+
+                            return;
+
+                        }
+
+
+                        // ==========================================
+                        // NO FILE SELECTED
+                        // ==========================================
+
+                        if (files.length === 0) {
+
+                            previewGrid.innerHTML = "";
+
+                            newPhotosPreview.classList.add("hidden");
+
+                            selectedPhotoCount.innerText = "";
+
+                            return;
+
+                        }
+
+
+                        // ==========================================
+                        // CLEAR PREVIOUS PREVIEW
+                        // ==========================================
+
+                        previewGrid.innerHTML = "";
+
+
+                        // ==========================================
+                        // CREATE PREVIEW
+                        // ==========================================
+
+                        files.forEach((file, index) => {
+
+                            const wrapper =
+                                document.createElement("div");
+
+
+                            wrapper.className =
+                                "relative aspect-square rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 shadow-sm group";
+
+
+                            // ==========================================
+                            // IMAGE
+                            // ==========================================
+
+                            const img =
+                                document.createElement("img");
+
+
+                            img.src =
+                                URL.createObjectURL(file);
+
+
+                            img.alt =
+                                `New photo ${index + 1}`;
+
+
+                            img.className =
+                                "w-full h-full object-cover transition duration-300 group-hover:scale-105";
+
+
+                            // ==========================================
+                            // IMAGE NUMBER
+                            // ==========================================
+
+                            const number =
+                                document.createElement("div");
+
+
+                            number.className =
+                                "absolute top-3 left-3 w-8 h-8 rounded-full bg-rose-500 text-white text-xs font-semibold flex items-center justify-center shadow";
+
+
+                            number.innerText =
+                                existingPhotoCount + index + 1;
+
+
+                            // ==========================================
+                            // FILE NAME
+                            // ==========================================
+
+                            const fileName =
+                                document.createElement("div");
+
+
+                            fileName.className =
+                                "absolute bottom-0 left-0 right-0 px-3 py-2 bg-black/60 text-white text-xs truncate";
+
+
+                            fileName.innerText =
+                                file.name;
+
+
+                            // ==========================================
+                            // APPEND
+                            // ==========================================
+
+                            wrapper.appendChild(img);
+
+                            wrapper.appendChild(number);
+
+                            wrapper.appendChild(fileName);
+
+                            previewGrid.appendChild(wrapper);
+
+                        });
+
+
+                        // ==========================================
+                        // SHOW PREVIEW SECTION
+                        // ==========================================
+
+                        newPhotosPreview.classList.remove(
+                            "hidden"
+                        );
+
+
+                        // ==========================================
+                        // UPDATE COUNT
+                        // ==========================================
+
+                        selectedPhotoCount.innerText =
+                            `${files.length} new photo${files.length > 1 ? "s" : ""} selected`;
+
+                    });
+
+                    // ===========================================
+                    // Replace Existing Photo - Live Preview
+                    // ===========================================
+
+                    const replaceInputs = document.querySelectorAll(
+                        'input[id^="replaceImage"]'
+                    );
+
+                    replaceInputs.forEach((input) => {
+
+                        input.addEventListener("change", function () {
+
+                            const file = this.files[0];
+
+                            if (!file) {
+                                return;
+                            }
+
+                            // Find the image card
+                            const imageCard = this.closest(".group");
+
+                            if (!imageCard) {
+                                return;
+                            }
+
+                            // Find the image inside this card
+                            const image = imageCard.querySelector("img");
+
+                            // Find the replace button
+                            const replaceButton = imageCard.querySelector(
+                                'label[for="' + this.id + '"]'
+                            );
+
+                            if (!image || !replaceButton) {
+                                return;
+                            }
+
+                            // Create preview URL
+                            const previewURL = URL.createObjectURL(file);
+
+                            // Replace old image with selected image
+                            image.src = previewURL;
+
+                            // Change button appearance/text
+                            replaceButton.classList.remove(
+                                "bg-white/95",
+                                "text-gray-800"
+                            );
+
+                            replaceButton.classList.add(
+                                "bg-green-500",
+                                "text-white"
+                            );
+
+                            replaceButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 13l4 4L19 7" />
+
+            </svg>
+
+            New image selected
+        `;
+
+                        });
+
+                    });
+
+                    // ==========================================
+                    // CATEGORY DROPDOWN
+                    // ==========================================
+
+                    const categoryDropdownBtn =
+                        document.getElementById("categoryDropdownBtn");
+
+                    const categoryDropdown =
+                        document.getElementById("categoryDropdown");
+
+                    const categoryArrow =
+                        document.getElementById("categoryArrow");
+
+                    const selectedCategory =
+                        document.getElementById("selectedCategory");
+
+                    const categoryInput =
+                        document.getElementById("categoryInput");
+
+                    const categoryOptions =
+                        document.querySelectorAll(".category-option");
+
+
+                    // ==========================================
+                    // OPEN / CLOSE DROPDOWN
+                    // ==========================================
+
+                    categoryDropdownBtn.addEventListener("click", (event) => {
+
+                        event.stopPropagation();
+
+                        categoryDropdown.classList.toggle("hidden");
+
+                        categoryArrow.classList.toggle("rotate-180");
+
+                    });
+
+
+                    // ==========================================
+                    // SELECT CATEGORY
+                    // ==========================================
+
+                    categoryOptions.forEach(option => {
+
+                        option.addEventListener("click", (event) => {
+
+                            event.stopPropagation();
+
+                            // Get category value
+                            const value =
+                                option.dataset.value;
+
+                            // Get display name
+                            const label =
+                                option.innerText.trim();
+
+                            // Update selected category
+                            selectedCategory.innerText =
+                                label;
+
+                            // Update selected category styling
+                            selectedCategory.classList.remove(
+                                "text-gray-500"
+                            );
+
+                            selectedCategory.classList.add(
+                                "text-gray-800",
+                                "font-medium"
+                            );
+
+                            // Store value inside hidden input
+                            categoryInput.value =
+                                value;
+
+
+                            // Remove previous selected state
+                            categoryOptions.forEach(item => {
+
+                                item.classList.remove(
+                                    "bg-rose-50",
+                                    "text-rose-600"
+                                );
+
+                            });
+
+
+                            // Highlight selected category
+                            option.classList.add(
+                                "bg-rose-50",
+                                "text-rose-600"
+                            );
+
+
+                            // Close dropdown
+                            categoryDropdown.classList.add(
+                                "hidden"
+                            );
+
+                            categoryArrow.classList.remove(
+                                "rotate-180"
+                            );
+
+                        });
+
+                    });
+
+
+                    // ==========================================
+                    // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+                    // ==========================================
+
+                    document.addEventListener("click", (event) => {
+
+                        if (
+                            !categoryDropdownBtn.contains(event.target) &&
+                            !categoryDropdown.contains(event.target)
+                        ) {
+
+                            categoryDropdown.classList.add(
+                                "hidden"
+                            );
+
+                            categoryArrow.classList.remove(
+                                "rotate-180"
+                            );
+
+                        }
+
+                    });
+
+
+                </script>
+
+</body>
+
+</html>

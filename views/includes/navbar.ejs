@@ -1,0 +1,162 @@
+<header id="navbar" class="bg-white shadow-sm sticky top-0 z-[1100] transition-all duration-300">
+    <div id="navbarContainer" class="max-w-7xl mx-auto px-4 py-4 transition-all duration-300">
+
+        <!-- TOP ROW -->
+        <div class="flex items-center justify-between">
+            <!-- LOGO -->
+            <a href="/listings" class="text-2xl font-bold text-rose-500 hover:text-rose-600 transition">
+                Wanderlust
+            </a>
+
+            <%- include("./desktopSearch.ejs") %><!-- DESKTOP SEARCH BAR -->
+            
+            <!-- RIGHT SECTION -->
+                <div class="flex items-center gap-3">
+
+                    <!-- Become Host -->
+                    <a href="/listings/new"
+                        class="hidden md:block border border-gray-300 px-5 py-2 rounded-full text-sm font-medium hover:shadow-md hover:border-gray-400 transition">
+                        Become a host
+                    </a>
+
+                    <% if(!currUser){ %>
+
+                        <!-- LOGIN -->
+                        <a href="/login"
+                            class="px-5 py-2 rounded-full text-sm font-medium border border-gray-300 hover:bg-gray-100 transition">
+                            Login
+                        </a>
+
+                        <!-- SIGNUP -->
+                        <a href="/signup"
+                            class="bg-rose-500 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-rose-600 shadow-md transition">
+                            Sign up
+                        </a>
+
+                        <% } else { %>
+
+                            <!-- USER DROPDOWN -->
+                            <div class="relative">
+
+                                <!-- BUTTON -->
+                                <button id="profileBtn"
+                                    class="flex items-center gap-3 border border-gray-300 rounded-full bg-white px-4 py-2 shadow-sm hover:shadow-lg hover:border-gray-400 transition duration-300">
+
+                                    <!-- USER ICON -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632z" />
+
+                                    </svg>
+
+                                    <!-- USERNAME -->
+                                    <span class="hidden sm:block font-medium text-gray-700 max-w-[130px] truncate">
+                                        <%= currUser.username %>
+                                    </span>
+
+                                    <!-- ARROW -->
+                                    <svg id="arrowIcon" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5 text-gray-500 transition-transform duration-300" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+
+                                    </svg>
+
+                                </button>
+
+                                <!-- DROPDOWN -->
+                                <div id="dropdownMenu"
+                                    class="absolute right-0 mt-3 min-w-[280px] max-w-[380px] bg-white rounded-2xl border border-gray-200 shadow-2xl opacity-0 scale-95 invisible transition-all duration-300 origin-top-right overflow-hidden z-50">
+
+                                    <!-- HEADER -->
+                                    <div class="px-5 py-5 bg-gray-50 border-b">
+
+                                        <div class="flex items-center gap-4">
+
+                                            <div
+                                                class="w-12 h-12 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 flex items-center justify-center text-white font-bold">
+
+                                                <%= currUser.username.charAt(0).toUpperCase() %>
+
+                                            </div>
+
+                                            <div>
+
+                                                <h3 class="font-semibold text-gray-800">
+
+                                                    <%= currUser.username %>
+
+                                                </h3>
+
+                                                <p class="text-sm text-gray-500 truncate max-w-[220px] cursor-default"
+                                                    title="<%= currUser.email %>">
+
+                                                    <%= currUser.email %>
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- MENU -->
+
+                                    <a href="#" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-100 transition">
+
+                                        <span class="text-xl">👤</span>
+
+                                        <span class="font-medium text-gray-700">
+                                            Profile
+                                        </span>
+
+                                    </a>
+
+                                    <a href="#" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-100 transition">
+
+                                        <span class="text-xl">🏡</span>
+
+                                        <span class="font-medium text-gray-700">
+                                            My Listings
+                                        </span>
+
+                                    </a>
+
+                                    <div class="border-t"></div>
+
+                                    <a href="/logout"
+                                        class="flex items-center gap-4 px-5 py-4 text-red-500 hover:bg-red-50 transition">
+
+                                        <span class="text-xl">🚪</span>
+
+                                        <span class="font-medium">
+                                            Logout
+                                        </span>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <% } %>
+
+                </div>
+        </div>
+
+        <%- include("./mobileSearch.ejs") %><!-- MOBILE SEARCH BAR -->
+
+
+
+    </div>
+</header>
+<!-- for access js file -->
+<script src="/js/navbar.js"></script>

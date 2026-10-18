@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error | Wanderlust</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center min-h-screen">
+
+    <!-- MAIN ERROR CARD -->
+    <div class="max-w-lg w-full bg-white rounded-xl p-8 text-center
+              shadow-2xl shadow-black/20 ring-1 ring-black/5">
+
+        <!-- ERROR CODE -->
+        <h1 class="text-7xl font-bold text-rose-500 mb-4">
+            <%= err.statusCode || 500 %>
+        </h1>
+
+        <!-- ERROR TITLE -->
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+            Oops! Something went wrong
+        </h2>
+
+        <!-- ERROR MESSAGE -->
+        <p class="text-gray-600 mb-6">
+            <%= err.message || "Unexpected error occurred. Please try again later." %>
+        </p>
+
+        <!-- ACTION BUTTONS -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/listings"
+                class="px-6 py-2.5 bg-rose-500 text-white rounded-lg font-medium hover:bg-rose-600 transition">
+                Go back to listings
+            </a>
+
+            <button onclick="history.back()"
+                class="px-6 py-2.5 border rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                Go back
+            </button>
+        </div>
+
+        <!-- FOOTER NOTE -->
+        <p class="text-sm text-gray-400 mt-8">
+            Wanderlust · Error handled gracefully
+        </p>
+
+    </div>
+
+</body>
+
+</html>
