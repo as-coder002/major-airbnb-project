@@ -98,6 +98,11 @@ app.use("/listings", listingRouter);
 //for review router access
 app.use("/listings/:id/reviews", reviewRouter);
 
+// redirect root route to listings page
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 //for any undefine path this request have to be lock for throw the error "page not found"
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));
