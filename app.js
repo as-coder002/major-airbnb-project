@@ -18,7 +18,7 @@ const reviewRouter = require("./routes/review.js");//for review router access
 const userRouter = require("./routes/user.js");//for user router access
 const ExpressError = require("./utils/ExpressError.js");//require the custom built error class 
 
-const port = 8080;//for server run on this port
+const port = process.env.PORT || 8080;//for server run on this port
 
 //for connection ready to data base
 main()
@@ -111,5 +111,5 @@ app.use((err, req, res, next) => {
 
 //for server run
 app.listen(port, () => {
-    console.log(`server running on this port: ${port}`);
+    console.log(`Server is listening on port ${port}`);
 });
